@@ -10,6 +10,8 @@ $codes = getCodes();
 $notAvailable = '#N/A';
 
 $carrier = 'FedEx'; /** Change it */
+//$carrier = 'Dicom'; /** Change it */
+//$carrier = '24/7'; /** Change it */
 $wineGroup = 'WINE';
 $country = 'US';
 $rates = getRates();
@@ -17,14 +19,15 @@ $rates = getRates();
 if ($fileRead = fopen($fileFrom, "r")) {
     if ($fileWrite = fopen($fileTo, 'a')) {
 
-        /** Change it */
-        $a = fputcsv($fileWrite, $header, ',');
+        if ($carrier == 'FedEx') {
+            $a = fputcsv($fileWrite, $header, ',');
+        }
 
         $shippingTable = [];
         $i = 0;
         $prevPos = 0;
 
-        while (!feof($fileRead) && $i < 100) {
+        while (!feof($fileRead)/* && $i < 100*/) {
             $line = fgetcsv($fileRead);
 
             if ($line[2] != $notAvailable) {

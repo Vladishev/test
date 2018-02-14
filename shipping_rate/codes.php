@@ -38,6 +38,8 @@ function getCodes()
 function getRates()
 {
     $file = 'files/Rates_FedEx.csv'; /** Change it */
+//    $file = 'files/Rates_Dicom.csv'; /** Change it */
+//    $file = 'files/Rates_24%2F7.csv'; /** Change it */
     $start = true;
     $rates = [];
 
@@ -78,6 +80,9 @@ function populate($line, $rate)
 function populateOrigin($line, $codes, $wineGroup, &$shippingTable, &$i, &$prevPos)
 {
     $carrier = 'FedEx'; /** Change it */
+//    $carrier = 'Dicom'; /** Change it */
+//$carrier = '24/7'; /** Change it */
+    $zoneField = 2; /** Change it */
     $shippingItem = [];
     $changed = true;
 
@@ -87,8 +92,7 @@ function populateOrigin($line, $codes, $wineGroup, &$shippingTable, &$i, &$prevP
         $prevLine = false;
     }
 
-    /** Change it */
-    if ($prevLine !== false && (((int)$line[0] - 1) == (int)$prevLine[4]) && ($codes[$line[1]] == $prevLine[1]) && ($line[2] == $prevLine[17]) && ($prevLine[5] == $wineGroup)) {
+    if ($prevLine !== false && (((int)$line[0] - 1) == (int)$prevLine[4]) && ($codes[$line[1]] == $prevLine[1]) && ($line[$zoneField] == $prevLine[17]) && ($prevLine[5] == $wineGroup)) {
         $changed = false;
     }
 
@@ -120,7 +124,7 @@ function populateOrigin($line, $codes, $wineGroup, &$shippingTable, &$i, &$prevP
                     $shippingItem[$k] = 'ORDER';
                     break;
                 case 17:
-                    $shippingItem[$k] = $line[2]; /** Change it */
+                    $shippingItem[$k] = $line[$zoneField];
                     break;
                 default:
                     $shippingItem[$k] = '*';
